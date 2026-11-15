@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+		<link rel="icon" type="image/png" href="favicon.png">
+		<title>Message for Ma'am Roan</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="ecard.css">
+	</head>
+	
+	<body>
+		<main class="stage" id="stage">
+
+			<!-- 1. PASSWORD GATE + HINT GAME -->
+			<section class="gate" id="gate">
+				<div class="mascot" data-bird></div>
+				<h1>For Ma'am Roan!</h1>
+				<p class="sub">There's a letter for you, You have to unlock it through my hint game (Goodluck pooo) 🔒</p>
+				<form id="form" autocomplete="off">
+					<label for="pw">Password</label>
+					<input id="pw" type="text" placeholder="type here…" spellcheck="false" autocapitalize="none">
+					<button type="submit" class="btn">Open ✉</button>
+				</form>
+				
+				<button type="button" class="btn alt" id="hintBtn">💡 Hint? Play a game first!</button>
+				<section class="game" id="game" hidden>
+					<p class="gtitle">Catch the stars! ⭐ <span id="count">0/5</span></p>
+					<p class="how">Drag Tweety (or use ← →). Avoid the 🌻!</p>
+					<div class="arena" id="arena"><div class="pal" data-bird></div><p class="note" id="note"></p></div>
+				</section>
+				<p class="hint" id="hint"></p>
+				<p class="err" id="err" aria-live="polite"></p>
+			</section>
+
+			<!-- 2. SCENE: the bird delivers the letter -->
+			<section class="scene" id="scene" hidden>
+				<div class="swing" aria-hidden="true"><i></i></div>
+				<div id="bird" data-bird="held" aria-hidden="true"></div>
+				<p class="bubble" id="bubble">Special delivery po! 🐤</p>
+
+				<div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open the letter">
+					<svg class="env-back" viewBox="0 0 340 220" preserveAspectRatio="none"><rect x="2" y="2" width="336" height="216" rx="10" fill="#ffd6e1" stroke="#1b1b1b" stroke-width="4"/></svg>
+					<div class="env-letter"></div>
+					<svg class="env-front" viewBox="0 0 340 220" preserveAspectRatio="none"><path d="M2 12Q2 2 12 2L170 124L328 2Q338 2 338 12V208Q338 218 328 218H12Q2 218 2 208Z" fill="#ffb3c7" stroke="#1b1b1b" stroke-width="4" stroke-linejoin="round"/></svg>
+					<svg class="env-flap" viewBox="0 0 340 128" preserveAspectRatio="none"><path d="M12 2H328Q338 2 332 10L176 126Q170 130 164 126L8 10Q2 2 12 2Z" fill="#ff8fb0" stroke="#1b1b1b" stroke-width="4" stroke-linejoin="round"/></svg>
+					<div class="seal">♥</div>
+				</div>
+				<p class="tap" id="tap">tap the heart to open!</p>
+			</section>
+
+			<!-- 3. THE LETTER -->
+			<section class="letter-wrap" id="letterWrap" hidden>
+				<article class="paper" id="paper">
+					<button class="close" id="close" aria-label="Fold the letter">✕</button>
+					<h2>For One of the best Prof 💛</h2>
+					<div id="body"></div>
+				</article>
+			</section>
+		</main>
+		
+		<script src="ecard.js"></script>
+	</body>
+</html>

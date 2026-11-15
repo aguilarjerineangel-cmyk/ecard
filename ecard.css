@@ -1,0 +1,739 @@
+/* Cartoon canary ecard*/
+:root {
+	--ink: #1b1b1b;
+	--yellow: #ffe21f;
+	--orange: #ff8a00;
+	--pink: #ffb3c7;
+	--red: #e0243c;
+	--blue: #2f86f0;
+	--fun: "Fredoka", "Trebuchet MS", sans-serif;
+	--hand: "Patrick Hand", "Segoe Print", cursive;
+}
+
+* { 
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+[hidden] { 
+	display: none !important;
+}
+	
+body { 
+	font-family: var(--fun);
+	color: var(--ink);
+	background: #7dd3fc;
+	overflow: hidden; 
+}
+
+.stage {
+	--bw: clamp(110px, 22vw, 170px);
+	position: relative;
+	height: 100vh;
+	height: 100dvh;
+	display: grid;
+	place-items: center;
+	overflow: hidden;
+	background: linear-gradient(#5ec3fb, #bfe9ff 75%);
+}
+
+/* flat cartoon clouds */
+.stage::before { 
+	content: "";
+	position: absolute;
+	inset: -5% -25%;
+	animation: drift 60s linear infinite alternate;
+	background:
+		radial-gradient(ellipse 120px 40px at 15% 16%, #fff 98%, transparent 100%), 
+		radial-gradient(ellipse 80px 36px at 19% 12%, #fff 98%, transparent 100%),
+		radial-gradient(ellipse 150px 46px at 60% 26%, #fff 98%, transparent 100%), 
+		radial-gradient(ellipse 90px 40px at 64% 21%, #fff 98%, transparent 100%),
+		radial-gradient(ellipse 130px 40px at 85% 62%, #fff 98%, transparent 100%), 
+		radial-gradient(ellipse 80px 34px at 88% 58%, #fff 98%, transparent 100%);
+}
+
+@keyframes drift { 
+	to { 
+		transform: translateX(12%); 
+	} 
+}
+
+/* grassy hill */
+.stage::after { 
+	content: "";
+	position: absolute;
+	z-index: 0;
+	left: -10%;
+	right: -10%;
+	bottom: -40px;
+	height: 130px;
+	background: #7ed957;
+	border-top: 5px solid var(--ink);
+	border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+
+/* ---------- buttons ---------- */
+.btn {
+	padding: 10px 24px;
+	font: 700 1.05rem var(--fun);
+	cursor: pointer;
+	color: var(--ink);
+	background: var(--yellow);
+	border: 4px solid var(--ink);
+	border-radius: 999px;
+	box-shadow: 4px 4px 0 var(--ink);
+	transition: transform .1s, box-shadow .1s;
+}
+.btn:hover { 
+	transform: translate(2px, 2px);
+	box-shadow: 2px 2px 0 var(--ink); 
+}
+.btn.alt { 
+	background: #9bd0ff;
+	margin-top: 12px; 
+}
+.btn:focus-visible, .envelope:focus-visible, .seed:focus-visible { 
+	outline: 4px solid var(--blue);
+	outline-offset: 3px; 
+}
+
+/* ---------- gate ---------- */
+.gate {
+	position: relative;
+	z-index: 2;
+	width: min(92vw, 410px);
+	margin-top: 80px;
+	padding: 62px 22px 20px;
+	text-align: center;
+	background: #fff;
+	border: 5px solid var(--ink);
+	border-radius: 30px;
+	box-shadow: 8px 8px 0 var(--ink);
+}
+
+.mascot { 
+	position: absolute;
+	top: -96px;
+	left: 50%;
+	width: 112px;
+	transform: translateX(-50%) rotate(-4deg);
+	animation: bob 1.6s ease-in-out infinite alternate; 
+}
+
+@keyframes bob { 
+	to { 
+		transform: translateX(-50%) translateY(-6px) rotate(3deg); 
+	} 
+}
+
+.mascot svg, .pal svg, #bird svg { 
+	display: block;
+	width: 100%; 
+}
+
+.gate h1 { 
+	font-size: 2rem;
+	color: var(--orange);
+	text-shadow: 2px 2px 0 var(--ink);
+	-webkit-text-stroke: 1px var(--ink);
+}
+
+.sub { 
+	margin: 4px 0 14px;
+	font-size: .95rem; 
+}
+
+form { 
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	align-items: center; 
+}
+
+label { 
+	font-weight: 600;
+	font-size: .85rem;
+	letter-spacing: .1em;
+	text-transform: uppercase;
+}
+
+input {
+  width: 85%;
+  padding: 8px 12px;
+  text-align: center;
+  font: 700 1.5rem var(--hand);
+  color: var(--ink);
+  background: #fffbe0;
+  border: 4px solid var(--ink); 
+  border-radius: 16px;
+  outline: none;
+}
+input:focus {
+	background: #fff;
+	border-color: var(--blue);
+}
+.hint { 
+	margin-top: 14px;
+	font-size: .95rem;
+	line-height: 1.5; 
+}
+.hint .q { 
+	color: #9aa; 
+	letter-spacing: .1em;
+}
+.hint b { 
+	color: var(--orange);
+	animation: pop .5s;
+	display: inline-block; 
+}
+.hint small { 
+	opacity: .75; 
+}
+.err { 
+	min-height: 1.4em;
+	margin-top: 6px; 
+	font: 700 1.25rem var(--hand);
+	color: var(--red); 
+}
+.shake { 
+	animation: shake .45s; 
+}
+@keyframes shake { 
+	25% { 
+		transform: translateX(-9px);
+	} 
+	75% { 
+		transform: translateX(9px);
+	}
+}
+.leave {
+	animation: leave .7s ease forwards;
+}
+@keyframes leave {
+	to {
+		opacity: 0;
+		transform: translateY(-40px) scale(.85) rotate(-5deg); 
+	}
+}
+@keyframes pop {
+	0% {
+		transform: scale(.3);
+	} 
+	70% {
+		transform: scale(1.3);
+	}
+	100% {
+		transform: scale(1);
+	} 
+}
+
+/* ---------- birdseed game ---------- */
+.game {
+	margin-top: 12px;
+}
+
+.gtitle {
+	font-weight: 700;
+	margin-bottom: 8px;
+}
+#count {
+	margin-left: 6px;
+	padding: 1px 10px;
+	background: var(--yellow); 
+	border: 3px solid var(--ink); 
+	border-radius: 999px; 
+}
+.arena { 
+	position: relative; 
+	height: 210px; 
+	overflow: hidden; 
+	background: linear-gradient(#bfe9ff, #e8f7ff); 
+	border: 4px solid var(--ink); 
+	border-radius: 20px; 
+}
+.pal { 
+	position: absolute; 
+	bottom: -6px; 
+	left: 50%; 
+	width: 74px; 
+	transform: translateX(-50%); 
+}
+.arena.hop .pal { 
+	animation: hop .35s; 
+}
+@keyframes hop { 
+	40% { 
+		transform: translateX(-50%) translateY(-22px);
+	} 
+}
+.how { 
+	margin-bottom: 8px; 
+	font-size: .8rem; 
+	opacity: .8; 
+}
+.arena { 
+	touch-action: none; 
+	cursor: ew-resize; 
+}
+.item { 
+	position: absolute; 
+	left: 0; top: 0; 
+	font-size: 2.1rem; 
+	line-height: 1; 
+	pointer-events: none; 
+}
+.spin { 
+	display: inline-block; 
+	animation: spin 1.4s linear infinite; 
+}
+@keyframes spin {
+	 to { 
+		transform: rotate(360deg); 
+	} 
+}
+.note {
+  position: absolute;
+   top: 8px; 
+   left: 50%; 
+   transform: translateX(-50%) scale(.7); 
+   padding: 2px 12px; 
+   white-space: nowrap;
+  font: 700 .85rem var(--fun); 
+  background: #fff; 
+  border: 3px solid var(--ink); 
+  border-radius: 14px; 
+  opacity: 0; transition: .2s;
+}
+.note.show { 
+	opacity: 1; 
+	transform: translateX(-50%); 
+}
+
+/* angry Tweety */
+.brows { 
+	display: none;
+}
+.cheek { 
+	transition: fill .2s; 
+}
+.pal.mad .brows { 
+	display: block; 
+}
+.pal.mad .cheek { 
+	fill: #ff3b30; 
+	opacity: .95; 
+}
+.pal.mad { 
+	animation: rage .1s 10;
+}
+.pal.mad::after { 
+	content: "💢"; 
+	position: absolute; 
+	top: -4px; 
+	right: -10px; 
+	font-size: 1.5rem; 
+}
+@keyframes rage { 
+	25% { 
+		transform: translateX(calc(-50% - 4px));
+	} 
+	75% { 
+		transform: translateX(calc(-50% + 4px)); 
+	} 
+}
+
+/* ---------- scene ---------- */
+.scene { 
+	position: absolute;
+	z-index: 1; 
+	inset: 0; 
+	display: grid; 
+	place-items: center; 
+}
+.swing { 
+	position: absolute; 
+	z-index: 10; 
+	top: 0; 
+	left: calc(91vw - var(--bw) / 2 - 85px); 
+	width: 170px; 
+	height: calc(15vh + var(--bw) * 1.09); 
+}
+.swing::before, .swing::after { 
+	content: ""; 
+	position: absolute; 
+	top: 0; 
+	bottom: 0; 
+	width: 5px; 
+	background: #b7773a; 
+	border: 2px solid var(--ink);
+}
+.swing::before { 
+	left: 14px; 
+} 
+
+.swing::after { 
+	right: 14px;
+}
+.swing i { 
+	position: absolute; 
+	left: 0; 
+	right: 0; 
+	bottom: -10px; 
+	height: 16px; 
+	background: #d99a54; 
+	border: 4px solid var(--ink); 
+	border-radius: 8px; 
+}
+#bird { 
+	position: absolute; 
+	left: 0; 
+	top: 0; 
+	width: var(--bw); 
+	z-index: 20; 
+	pointer-events: none; 
+	animation: fly 4.4s cubic-bezier(.45, .05, .35, 1) forwards; 
+}
+@keyframes fly {
+ 	0%   { 
+		transform: translate(-30vw, 6vh) rotate(8deg); 
+	}
+  	35%  { 
+		transform: translate(32vw, 16vh) rotate(-4deg); 
+	}
+ 	 70%  { 
+		transform: translate(62vw, 8vh) rotate(-8deg); 
+	}
+ 	 100% { 
+		transform: translate(calc(100vw - var(--bw) - 9vw), 15vh) rotate(0); 
+	}
+}
+.wing { 
+	transform-origin: 74px 164px; 
+	animation: flap .2s ease-in-out infinite alternate; 
+}
+.mascot .wing, .pal .wing { 
+	animation-duration: .6s; 
+}
+@keyframes flap { 
+	from { 
+		transform: rotate(-35deg); 
+	} 
+	to { 
+		transform: rotate(12deg); 
+	} 
+}
+.eyes { 
+	transform-origin: 100px 92px; 
+	animation: blink 4s infinite; 
+}
+@keyframes blink { 
+	0%, 94%, 100% { 
+		transform: scaleY(1); 
+	} 
+	97% { 
+		transform: scaleY(.1); 
+	} 
+}
+#bird.perched { 
+	animation: none; 
+	transform: translate(calc(100vw - var(--bw) - 9vw), 15vh); 
+}
+#bird.perched .wing { 
+	animation: none; 
+	transform: rotate(-5deg); 
+}
+#held { 
+	transition: opacity .2s; 
+}
+#bird.dropped #held { 
+	opacity: 0; 
+}
+.bubble {
+  	position: absolute; 
+ 	z-index: 21; 
+  	top: calc(15vh - 36px); 
+  	left: calc(100vw - var(--bw) - 9vw - 190px); 
+  	padding: 6px 16px;
+  	font: 700 1.05rem var(--fun); 
+  	background: #fff; 
+  	border: 4px solid var(--ink); 
+  	border-radius: 18px;
+  	box-shadow: 4px 4px 0 var(--ink); 
+  	opacity: 0; 
+  	transform: scale(.6); 
+  	transition: .35s;
+}
+.bubble.show { 
+	opacity: 1; 
+	transform: none; 
+}
+
+/* ---------- envelope ---------- */
+.envelope { 
+	position: relative; 
+	width: min(84vw, 340px); 
+	aspect-ratio: 340 / 220; 
+	margin-top: 6vh; 
+	animation: drop 1.3s 1.45s cubic-bezier(.3, .6, .4, 1) both; 
+	filter: drop-shadow(6px 6px 0 rgba(27, 27, 27, .85)); 
+}
+@keyframes drop {
+  	0% { 
+		opacity: 0; 
+		transform: translateY(-75vh) rotate(-28deg); 
+	} 
+	15% { 
+		opacity: 1; 
+	}
+  	70% { 
+		transform: translateY(0) rotate(4deg); 
+	} 
+	85% { 
+		transform: translateY(-14px) rotate(-2deg); 
+	}
+  	100% { 
+		opacity: 1; 
+		transform: none; 
+	}
+}
+.envelope.ready { 
+	cursor: pointer; 
+}
+.env-back, .env-front, .env-flap { 
+	position: absolute; 
+	left: 0; width: 100%; 
+}
+.env-back, .env-front { 
+	top: 0; 
+	height: 100%; 
+}
+.env-front { 
+	z-index: 3; 
+}
+.env-flap { 
+	z-index: 4; 
+	top: 0; 
+	height: 58%; 
+	transform-origin: top; 
+	transition: transform .8s ease, z-index 0s .4s; 
+}
+.env-letter { 
+	position: absolute; 
+	z-index: 2; 
+	left: 7%; 
+	right: 7%; 
+	top: 6%; 
+	height: 88%; 
+	background: #fffbe0; 
+	border: 3px solid var(--ink); 
+	border-radius: 6px; 
+	transition: transform .9s ease; 
+}
+.seal {
+  	position: absolute; 
+	z-index: 5; 
+	left: 50%; 
+	top: 58%; 
+	width: 56px; 
+	height: 56px; 
+	transform: translate(-50%, -50%);
+  	display: grid; 
+	place-items: center; 
+	font-size: 1.7rem; 
+	color: #fff; 
+	background: var(--red); border: 4px solid var(--ink); 
+	border-radius: 50%; 
+	transition: .5s;
+}
+.envelope.ready .seal { 
+	animation: pulse 1.2s infinite; 
+}
+@keyframes pulse { 
+	50% { 
+		transform: translate(-50%, -50%) scale(1.15); 
+	} 
+}
+.envelope.open .env-flap { 
+	transform: perspective(800px) rotateX(180deg); 
+	z-index: 1; 
+}
+.envelope.open .seal { 
+	opacity: 0; 
+	transform: translate(-50%, -50%) scale(2) rotate(25deg); 
+	animation: none; 
+}
+.envelope.pull .env-letter { 
+	transform: translateY(-62%); 
+}
+.tap { 
+	position: absolute; 
+	z-index: 3; 
+	bottom: 4vh; 
+	font: 700 1.3rem var(--fun); 
+	color: #fff; 
+	text-shadow: 2px 2px 0 var(--ink); 
+	opacity: 0; 
+	transition: opacity .6s; 
+}
+.tap.show { 
+	opacity: 1; 
+	animation: blinkt 1.6s infinite; 
+}
+@keyframes blinkt { 
+	50% { 
+		opacity: .5; 
+	} 
+}
+.mote { 
+	position: absolute; 
+	bottom: -10px; 
+	border-radius: 50%; 
+	background: rgba(255, 255, 255, .85); 
+	animation: rise linear infinite; 
+	pointer-events: none; 
+}
+@keyframes rise { 
+	to { 
+		transform: translateY(-105vh) translateX(30px); 
+		opacity: 0; 
+	} 
+}
+
+/* ---------- the letter ---------- */
+.letter-wrap { 
+	position: absolute; 
+	z-index: 30; 
+	inset: 0; 
+	display: grid; 
+	place-items: center; 
+	padding: 14px; 
+	background: rgba(27, 27, 27, .45); 
+	animation: fade .4s both; 
+}
+@keyframes fade { 
+	from { 
+		opacity: 0; 
+	} 
+}
+.paper {
+ 	position: relative; 
+	width: min(94vw, 560px); 
+	max-height: 90vh; 
+	overflow-y: auto; 
+	padding: 28px 24px 22px;
+  	background: #fffbe0; 
+	border: 5px solid var(--ink); 
+	border-radius: 26px; 
+	box-shadow: 8px 8px 0 var(--ink);
+  	animation: unfold .8s cubic-bezier(.2, .7, .3, 1) both;
+}
+@keyframes unfold { 
+	from { 
+		opacity: 0; transform: translateY(60px) scale(.7) rotate(-5deg); 
+	} 
+}
+.paper h2 { 
+	text-align: center; 
+	font-size: 1.8rem; 
+	color: var(--orange); 
+	text-shadow: 2px 2px 0 var(--ink); 
+	margin-bottom: 12px; 
+}
+.paper p.line { 
+	font: 400 1.45rem/1.4 var(--hand); 
+	margin-bottom: 11px; 
+	opacity: 0; 
+	animation: ink .8s forwards; 
+}
+.paper p.sign { 
+	text-align: right; 
+	font-size: 1.7rem; 
+}
+.paper p.ps { 
+	font-size: 1.2rem; 
+	color: #6a5a2a; 
+}
+@keyframes ink { 
+	from { 
+		opacity: 0; 
+		transform: translateY(8px) scale(.96); 
+	} 
+	to { 
+		opacity: 1; 
+		transform: none; 
+	} 
+}
+.close { 
+	position: absolute; 
+	top: 8px; 
+	right: 10px; 
+	width: 34px; 
+	height: 34px; 
+	padding: 0; 
+	font: 700 1rem var(--fun); 
+	color: #fff; 
+	background: var(--red); 
+	border: 3px solid var(--ink); 
+	border-radius: 50%; 
+	cursor: pointer; 
+}
+
+@media (prefers-reduced-motion: reduce) {
+ 	*, *::before, *::after { 
+		animation-duration: .01s !important; 
+		animation-delay: 0s !important; 
+		transition-duration: .01s !important; 
+	}
+}
+
+/* ---------- music button, sparkles, confetti ---------- */
+:root { 
+	box-sizing: border-box; 
+	padding-top: env(safe-area-inset-top, 0px); 
+	padding-bottom: env(safe-area-inset-bottom, 0px); 
+}
+html, body { 
+	height: 100%; 
+}
+.stage { 
+	height: 100%; 
+}
+.musicbtn { 
+	position: fixed; 
+	z-index: 50; 
+	top: calc(env(safe-area-inset-top, 0px) + 10px); 
+	right: 12px; 
+	padding: 4px 12px; 
+	font-size: 1.3rem; 
+}
+.pop { 
+	position: fixed; 
+	z-index: 60; 
+	pointer-events: none; 
+	font-size: 22px; 
+	transform: translate(-50%, -50%); 
+	animation: popup .9s ease-out forwards; 
+}
+@keyframes popup { 
+	to { 
+		transform: translate(-50%, -150%) scale(1.6) rotate(20deg); 
+		opacity: 0; 
+	} 
+}
+.confetti { 
+	position: fixed; 
+	z-index: 70; 
+	top: -40px; 
+	pointer-events: none; 
+	animation: fall linear forwards; 
+}
+@keyframes fall { 
+	to { 
+		transform: translateY(110vh) rotate(540deg); 
+	} 
+}
+@media (prefers-reduced-motion: reduce) { 
+	.confetti, .pop { display: none; 
+	} 
+}
